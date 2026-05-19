@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService, AuthResponse } from '../services/auth.service';
 
 @Component({
@@ -12,7 +13,7 @@ export class LoginComponent {
   loading = false;
   message = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit(event: Event): void {
     event.preventDefault();
@@ -23,5 +24,10 @@ export class LoginComponent {
       this.loading = false;
       this.message = response.message;
     });
+  }
+
+  goToSignup(event: Event): void {
+    event.preventDefault();
+    this.router.navigate(['/signup']);
   }
 }
