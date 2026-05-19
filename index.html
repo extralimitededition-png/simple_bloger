@@ -461,13 +461,30 @@
   .empty-state { text-align: center; padding: 4rem 2rem; color: var(--muted); }
   .empty-state .big-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.4; }
   .empty-state h3 { font-family: var(--serif); font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--ink); }
+
+  .login-layout { max-width: 520px; margin: 3rem auto 4rem; padding: 0 2rem; }
+  .login-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 2.5rem;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.08);
+  }
+  .login-head h2 { font-family: var(--serif); font-size: 2.1rem; margin-bottom: 0.5rem; }
+  .login-head p { color: var(--muted); margin-bottom: 1.8rem; }
+  .login-form { display: grid; gap: 1rem; }
+  .login-form label { display: grid; gap: 0.4rem; color: var(--ink); font-size: 0.95rem; }
+  .login-form input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--paper); color: var(--ink); }
+  .login-form input::placeholder { color: var(--muted); }
+  .login-hint { margin-top: 1.5rem; color: var(--muted); font-size: 0.92rem; }
+  .login-hint button { background: none; border: none; color: var(--accent); font-weight: 700; cursor: pointer; padding: 0; }
 </style>
 </head>
 <body>
 
 <!-- ── NAV ── -->
 <nav>
-  <div class="nav-brand" onclick="navigate('home')">Jaisamarn <span>Suwinthawong xx</span></div>
+  <div class="nav-brand" onclick="navigate('home')">Jaisamarn <span>Suwinthawong</span></div>
   <div class="nav-links">
     <a onclick="navigate('home')" id="nav-home" class="active">Home</a>
     <a onclick="filterCat('Technology')" id="nav-tech">Technology</a>
@@ -476,7 +493,7 @@
     <a onclick="navigate('about')" id="nav-about">About</a>
   </div>
   <div class="nav-actions">
-    <button class="btn-nav btn-outline-light" onclick="navigate('home')">Sign In</button>
+    <button class="btn-nav btn-outline-light" onclick="navigate('login')">Sign In</button>
     <button class="btn-nav btn-accent" onclick="navigate('write')">Write ✦</button>
   </div>
 </nav>
@@ -510,6 +527,28 @@
         <div class="recent-mini" id="sidebar-recent"></div>
       </div>
     </aside>
+  </div>
+</div>
+
+<!-- ══════════ LOGIN VIEW ══════════ -->
+<div class="view" id="view-login">
+  <div class="login-layout">
+    <div class="login-card">
+      <div class="login-head">
+        <h2>Log In</h2>
+        <p>Sign in to access your articles, drafts, and author tools.</p>
+      </div>
+      <div class="login-form">
+        <label>Email
+          <input type="email" placeholder="you@example.com" required />
+        </label>
+        <label>Password
+          <input type="password" placeholder="Enter your password" required />
+        </label>
+        <button class="publish-btn" onclick="navigate('home')">Sign In</button>
+      </div>
+      <p class="login-hint">New here? <button class="save-btn" onclick="navigate('write')">Create account</button></p>
+    </div>
   </div>
 </div>
 

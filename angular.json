@@ -81,5 +81,8 @@
       }
     }
   },
-  "defaultProject": "simple-bloger"
+  "defaultProject": "simple-bloger",
+  "cli": {
+    "analytics": false
+  }
 }
