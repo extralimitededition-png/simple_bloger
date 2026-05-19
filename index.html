@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Ink — Angular Blog</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #1a1209;
+    --paper: #f5f0e8;
+    --muted: #7c7060;
+    --accent: #c0392b;
+    --accent-light: #f8ece9;
+    --border: #d9d0bc;
+    --card-bg: #fffdf8;
+    --tag-bg: #ede8dc;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    background: var(--ink);
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-brand {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-style: italic;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    color: var(--paper);
+  }
+  .nav-brand span { color: var(--accent); }
+  .nav-links { display: flex; gap: 1.8rem; align-items: center; }
+  .nav-links a {
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #c8bfac;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s;
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+  }
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--paper);
+    border-bottom-color: var(--accent);
+  }
+  .nav-actions { display: flex; gap: 0.6rem; align-items: center; }
+  .btn-nav {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 6px 16px;
+    border-radius: 3px;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: all 0.18s;
+    border: none;
+  }
+  .btn-outline-light {
+    background: transparent;
+    color: #c8bfac;
+    border: 1px solid #4a4030;
+  }
+  .btn-outline-light:hover { border-color: var(--accent); color: var(--paper); }
+  .btn-accent { background: var(--accent); color: #fff; }
+  .btn-accent:hover { background: #a93226; }
+
+  /* ── VIEWS ── */
+  .view { display: none; animation: fadeIn 0.3s ease; }
+  .view.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  /* ── HOME HERO ── */
+  .hero {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 5rem 2.5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-bottom: 4px solid var(--accent);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '"';
+    position: absolute;
+    font-family: var(--serif);
+    font-size: 28rem;
+    color: rgba(255,255,255,0.03);
+    top: -6rem;
+    left: -2rem;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 700;
+    line-height: 1.15;
+    max-width: 700px;
+    margin-bottom: 1.2rem;
+  }
+  .hero p {
+    color: #b0a898;
+    font-size: 1.05rem;
+    max-width: 520px;
+    margin-bottom: 2rem;
+  }
+  .hero-search {
+    display: flex;
+    gap: 0;
+    max-width: 460px;
+    width: 100%;
+    border: 1px solid #3a3020;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .hero-search input {
+    flex: 1;
+    background: #2a2418;
+    border: none;
+    padding: 10px 16px;
+    color: var(--paper);
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    outline: none;
+  }
+  .hero-search input::placeholder { color: #5c5040; }
+  .hero-search button {
+    background: var(--accent);
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: background 0.18s;
+  }
+  .hero-search button:hover { background: #a93226; }
+
+  /* ── FEATURED STRIP ── */
+  .featured-strip {
+    background: var(--accent);
+    color: #fff;
+    padding: 10px 2.5rem;
+    display: flex;
+    gap: 2rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .featured-strip span { opacity: 0.7; white-space: nowrap; cursor: pointer; transition: opacity 0.18s; }
+  .featured-strip span:hover { opacity: 1; }
+
+  /* ── MAIN LAYOUT ── */
+  .layout { display: grid; grid-template-columns: 1fr 300px; gap: 0; max-width: 1140px; margin: 0 auto; padding: 0 2rem 4rem; }
+  .posts-col { padding: 2.5rem 2.5rem 0 0; border-right: 1px solid var(--border); }
+  .sidebar { padding: 2.5rem 0 0 2rem; }
+
+  /* ── SECTION HEADING ── */
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .section-heading h2 {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+  .section-heading::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── POST CARD ── */
+  .post-card {
+    display: grid;
+    grid-template-columns: 1fr 140px;
+    gap: 1.2rem;
+    padding: 1.8rem 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.18s;
+  }
+  .post-card:hover .post-title { color: var(--accent); }
+  .post-card:last-child { border-bottom: none; }
+  .post-meta { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
+  .tag {
+    background: var(--tag-bg);
+    color: var(--muted);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .tag:hover, .tag.active-tag { background: var(--accent); color: #fff; }
+  .post-date { font-size: 0.75rem; color: var(--muted); }
+  .post-title {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 0.5rem;
+    transition: color 0.18s;
+  }
+  .post-excerpt {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.65;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .post-author-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.9rem;
+  }
+  .avatar {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.65rem; font-weight: 600;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .post-author-name { font-size: 0.8rem; font-weight: 500; }
+  .read-time { font-size: 0.75rem; color: var(--muted); margin-left: auto; }
+  .post-thumb {
+    background: var(--border);
+    border-radius: 4px;
+    width: 140px;
+    height: 100px;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 2rem;
+    color: rgba(0,0,0,0.15);
+    align-self: flex-start;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar-block { margin-bottom: 2.2rem; }
+  .sidebar-title {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--ink);
+  }
+  .sidebar-cats { display: flex; flex-direction: column; gap: 0; }
+  .cat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .cat-item:hover { color: var(--accent); }
+  .cat-count {
+    font-size: 0.75rem;
+    background: var(--tag-bg);
+    padding: 2px 8px;
+    border-radius: 10px;
+    color: var(--muted);
+  }
+  .recent-mini {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .recent-item {
+    display: flex;
+    gap: 0.8rem;
+    cursor: pointer;
+  }
+  .recent-item:hover .recent-title { color: var(--accent); }
+  .recent-num {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--border);
+    flex-shrink: 0;
+    line-height: 1;
+    width: 28px;
+  }
+  .recent-title { font-size: 0.85rem; font-weight: 500; line-height: 1.4; transition: color 0.15s; }
+  .recent-date { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+
+  /* ── POST DETAIL VIEW ── */
+  .post-detail-layout { max-width: 780px; margin: 0 auto; padding: 3rem 2.5rem 5rem; }
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.8rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--muted); cursor: pointer; margin-bottom: 2rem;
+    border: none; background: none; transition: color 0.15s;
+  }
+  .back-btn:hover { color: var(--accent); }
+  .post-header { margin-bottom: 2.5rem; }
+  .post-header .tag { margin-bottom: 1rem; display: inline-block; }
+  .post-header h1 { font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; line-height: 1.2; margin-bottom: 1rem; }
+  .post-header .subtitle { font-size: 1.1rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.5rem; }
+  .post-byline {
+    display: flex; align-items: center; gap: 0.8rem;
+    padding: 1rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .byline-info { flex: 1; }
+  .byline-name { font-size: 0.9rem; font-weight: 500; }
+  .byline-meta { font-size: 0.78rem; color: var(--muted); }
+  .post-body { font-size: 1.05rem; line-height: 1.85; margin-top: 2.5rem; }
+  .post-body h2 { font-family: var(--serif); font-size: 1.5rem; margin: 2.5rem 0 1rem; font-weight: 700; }
+  .post-body h3 { font-family: var(--serif); font-size: 1.2rem; margin: 2rem 0 0.8rem; font-weight: 400; font-style: italic; }
+  .post-body p { margin-bottom: 1.4rem; color: #2a2010; }
+  .post-body blockquote {
+    border-left: 3px solid var(--accent);
+    padding: 0.5rem 0 0.5rem 1.5rem;
+    margin: 2rem 0;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.15rem;
+    color: #4a3820;
+  }
+  .post-body code {
+    background: var(--tag-bg);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.88em;
+    color: var(--accent);
+    font-family: 'Fira Code', monospace;
+  }
+  .tags-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+  .tags-row .tag { font-size: 0.75rem; }
+
+  /* ── COMMENTS ── */
+  .comments-section { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+  .comments-section h3 { font-family: var(--serif); font-size: 1.4rem; font-weight: 700; margin-bottom: 1.5rem; }
+  .comment-form { background: var(--card-bg); border: 1px solid var(--border); border-radius: 4px; padding: 1.5rem; margin-bottom: 2rem; }
+  .comment-form h4 { font-size: 0.9rem; font-weight: 500; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem; }
+  .form-input {
+    width: 100%; padding: 9px 12px;
+    background: var(--paper); border: 1px solid var(--border);
+    border-radius: 3px; font-family: var(--sans); font-size: 0.88rem;
+    color: var(--ink); outline: none; transition: border-color 0.15s;
+  }
+  .form-input:focus { border-color: var(--accent); }
+  textarea.form-input { resize: vertical; min-height: 90px; }
+  .btn-post {
+    margin-top: 0.8rem; padding: 9px 24px;
+    background: var(--ink); color: var(--paper); border: none;
+    font-family: var(--sans); font-size: 0.85rem; font-weight: 500;
+    letter-spacing: 0.06em; border-radius: 3px; cursor: pointer;
+    transition: background 0.18s;
+  }
+  .btn-post:hover { background: var(--accent); }
+  .comment-list { display: flex; flex-direction: column; gap: 1.5rem; }
+  .comment-item { display: flex; gap: 1rem; }
+  .comment-body { flex: 1; }
+  .comment-author-name { font-size: 0.9rem; font-weight: 500; }
+  .comment-date { font-size: 0.75rem; color: var(--muted); }
+  .comment-text { font-size: 0.9rem; line-height: 1.65; color: #3a2e1e; margin-top: 0.3rem; }
+
+  /* ── WRITE VIEW ── */
+  .write-layout { max-width: 780px; margin: 0 auto; padding: 3rem 2.5rem 5rem; }
+  .write-layout h2 { font-family: var(--serif); font-size: 2rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .write-layout .sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 2.5rem; }
+  .write-form { display: flex; flex-direction: column; gap: 1rem; }
+  .write-form .form-input.title-input { font-size: 1.2rem; font-weight: 500; font-family: var(--serif); }
+  .write-form .form-input.body-input { min-height: 280px; font-size: 1rem; line-height: 1.8; }
+  .form-group { display: flex; flex-direction: column; gap: 0.3rem; }
+  .form-group label { font-size: 0.78rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+  .cat-select { padding: 9px 12px; background: var(--paper); border: 1px solid var(--border); border-radius: 3px; font-family: var(--sans); font-size: 0.9rem; color: var(--ink); outline: none; }
+  .write-actions { display: flex; gap: 0.8rem; align-items: center; margin-top: 0.5rem; }
+  .publish-btn { background: var(--accent); color: #fff; border: none; font-family: var(--sans); font-size: 0.9rem; font-weight: 500; padding: 10px 28px; border-radius: 3px; cursor: pointer; transition: background 0.18s; letter-spacing: 0.04em; }
+  .publish-btn:hover { background: #a93226; }
+  .save-btn { background: transparent; color: var(--muted); border: 1px solid var(--border); font-family: var(--sans); font-size: 0.88rem; padding: 10px 20px; border-radius: 3px; cursor: pointer; transition: all 0.18s; }
+  .save-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .success-toast { display: none; background: #2d6a4f; color: #fff; padding: 0.8rem 1.2rem; border-radius: 4px; font-size: 0.88rem; margin-top: 1rem; }
+  .success-toast.show { display: block; animation: fadeIn 0.3s ease; }
+
+  /* ── ABOUT VIEW ── */
+  .about-layout { max-width: 720px; margin: 0 auto; padding: 4rem 2.5rem 5rem; }
+  .about-layout h1 { font-family: var(--serif); font-size: 2.5rem; font-weight: 700; font-style: italic; margin-bottom: 0.3rem; }
+  .about-layout .lead { font-size: 1.1rem; color: var(--muted); margin-bottom: 2.5rem; }
+  .about-body p { margin-bottom: 1.3rem; font-size: 1.02rem; line-height: 1.8; }
+  .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+  .team-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 4px; padding: 1.5rem; text-align: center; }
+  .team-avatar { width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 0.8rem; font-size: 1.1rem; font-weight: 700; color: #fff; display: flex; align-items: center; justify-content: center; }
+  .team-name { font-weight: 500; font-size: 0.95rem; margin-bottom: 0.2rem; }
+  .team-role { font-size: 0.78rem; color: var(--muted); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    color: #8a7d68;
+    padding: 2.5rem;
+    text-align: center;
+    font-size: 0.8rem;
+    margin-top: 0;
+  }
+  footer .footer-brand { font-family: var(--serif); font-size: 1.4rem; font-style: italic; color: var(--paper); margin-bottom: 0.5rem; }
+  footer span { color: var(--accent); }
+
+  /* ── EMPTY STATE ── */
+  .empty-state { text-align: center; padding: 4rem 2rem; color: var(--muted); }
+  .empty-state .big-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.4; }
+  .empty-state h3 { font-family: var(--serif); font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--ink); }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-brand" onclick="navigate('home')">The <span>Ink</span></div>
+  <div class="nav-links">
+    <a onclick="navigate('home')" id="nav-home" class="active">Home</a>
+    <a onclick="filterCat('Technology')" id="nav-tech">Technology</a>
+    <a onclick="filterCat('Design')" id="nav-design">Design</a>
+    <a onclick="filterCat('Culture')" id="nav-culture">Culture</a>
+    <a onclick="navigate('about')" id="nav-about">About</a>
+  </div>
+  <div class="nav-actions">
+    <button class="btn-nav btn-outline-light" onclick="navigate('home')">Sign In</button>
+    <button class="btn-nav btn-accent" onclick="navigate('write')">Write ✦</button>
+  </div>
+</nav>
+
+<!-- ══════════ HOME VIEW ══════════ -->
+<div class="view active" id="view-home">
+  <div class="hero">
+    <div class="hero-eyebrow">The Independent Writers' Platform</div>
+    <h1>Stories worth reading, ideas worth sharing</h1>
+    <p>Thoughtful writing on technology, design, culture, and everything in between.</p>
+    <div class="hero-search">
+      <input type="text" id="search-input" placeholder="Search articles…" oninput="doSearch()" />
+      <button onclick="doSearch()">Search</button>
+    </div>
+  </div>
+
+  <div class="featured-strip" id="featured-strip"></div>
+
+  <div class="layout">
+    <div class="posts-col">
+      <div class="section-heading"><h2 id="posts-heading">Latest Articles</h2></div>
+      <div id="posts-list"></div>
+    </div>
+    <aside class="sidebar">
+      <div class="sidebar-block">
+        <div class="sidebar-title">Topics</div>
+        <div class="sidebar-cats" id="sidebar-cats"></div>
+      </div>
+      <div class="sidebar-block">
+        <div class="sidebar-title">Most Recent</div>
+        <div class="recent-mini" id="sidebar-recent"></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- ══════════ POST DETAIL VIEW ══════════ -->
+<div class="view" id="view-post">
+  <div class="post-detail-layout">
+    <button class="back-btn" onclick="navigate('home')">← Back to articles</button>
+    <div id="post-detail-content"></div>
+  </div>
+</div>
+
+<!-- ══════════ WRITE VIEW ══════════ -->
+<div class="view" id="view-write">
+  <div class="write-layout">
+    <h2>Write an Article</h2>
+    <p class="sub">Share your ideas with the world.</p>
+    <div class="write-form">
+      <div class="form-group">
+        <label>Title</label>
+        <input type="text" class="form-input title-input" id="w-title" placeholder="Your article title…" />
+      </div>
+      <div class="form-group">
+        <label>Subtitle / tagline</label>
+        <input type="text" class="form-input" id="w-sub" placeholder="A one-liner about this piece…" />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Author name</label>
+          <input type="text" class="form-input" id="w-author" placeholder="Your name" />
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select class="form-input cat-select" id="w-cat">
+            <option>Technology</option>
+            <option>Design</option>
+            <option>Culture</option>
+            <option>Science</option>
+            <option>Business</option>
+            <option>Opinion</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Content</label>
+        <textarea class="form-input body-input" id="w-body" placeholder="Write your article here… You can use paragraphs separated by blank lines."></textarea>
+      </div>
+      <div class="write-actions">
+        <button class="publish-btn" onclick="publishPost()">Publish Article</button>
+        <button class="save-btn" onclick="saveDraft()">Save draft</button>
+      </div>
+      <div class="success-toast" id="success-toast">✓ Article published! Redirecting to home…</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ ABOUT VIEW ══════════ -->
+<div class="view" id="view-about">
+  <div class="about-layout">
+    <h1>About The Ink</h1>
+    <p class="lead">An independent platform for writers who care about craft.</p>
+    <div class="about-body">
+      <p>The Ink was born from a simple belief: good writing deserves a beautiful home. We built this platform for writers who want their ideas to be read, remembered, and talked about — not buried under algorithmic noise.</p>
+      <p>We cover technology, design, culture, science, business, and opinion. Our editorial standard is simple: be honest, be thorough, and respect your reader's time.</p>
+      <p>Every article published here goes through our editorial desk. We don't chase clicks — we chase clarity.</p>
+    </div>
+    <div class="section-heading" style="margin-top: 3rem;"><h2>The Team</h2></div>
+    <div class="team-grid" id="about-team"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-brand">The <span>Ink</span></div>
+  <div>© 2025 The Ink · Independent · Thoughtful · Open</div>
+</footer>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────
+const AVATARS = ['#c0392b','#2980b9','#27ae60','#8e44ad','#e67e22','#16a085','#d35400'];
+function avatarColor(i){ return AVATARS[i % AVATARS.length]; }
+function initials(name){ return name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2); }
+
+const SEED_POSTS = [
+  {
+    id:1, title:"The quiet revolution inside large language models",
+    subtitle:"How transformer architecture changed what machines can say — and what they cannot.",
+    category:"Technology", author:"Elena Marchetti", date:"May 14, 2025", readTime:"7 min",
+    excerpt:"For most of computing history, language was a solved problem: tokenise, parse, execute. Then came attention mechanisms, and everything changed in ways nobody fully anticipated.",
+    body:`For most of computing history, language was a solved problem: tokenise, parse, execute. Then came attention mechanisms, and everything changed in ways nobody fully anticipated.
+
+## The architecture shift
+
+The transformer paper — "Attention is All You Need" — arrived in 2017 not with fanfare but with a modest title that turned out to be the most accurate description in machine learning history. What the architecture achieved was deceptively simple: it allowed every token in a sequence to attend to every other token simultaneously.
+
+Previous architectures processed language sequentially. Transformers process it as a whole. The difference is not merely computational — it is conceptual.
+
+> "The question is not whether machines can think. The question is whether we can think about machines thinking clearly enough to be useful."
+
+## What changed downstream
+
+Once attention unlocked the ability to hold a sentence — and then a paragraph, and then a document — in context simultaneously, capability emerged that nobody designed. Models began to reason analogically, translate idiom, summarise argument.
+
+This is the part that still unsettles researchers: **emergence**. Behaviours appear at scale that were not programmed and are not fully understood. Whether this represents intelligence or extremely sophisticated pattern matching is a question that may be unanswerable in principle.
+
+## The cost of scale
+
+None of this is free. Training a large language model requires energy equivalent to driving a car to the moon. The carbon footprint of inference at scale is now a legitimate environmental question, not a rhetorical one.
+
+The field is beginning to ask whether efficiency — doing more with less — is the next frontier. The answer almost certainly is yes.
+
+## Where this goes
+
+The honest answer is: nobody knows. Language models have already changed how code is written, how customer service operates, how drafts are made. The second-order effects — on labour, on information trust, on what it means to write — are still unfolding.
+
+What we can say with confidence is that the quiet revolution inside these models is not finished.`,
+    comments:[
+      {author:"Tamir Osei", date:"May 15, 2025", text:"Excellent piece. The emergence point is what I keep coming back to — it's genuinely philosophically strange."},
+      {author:"Priya Nair", date:"May 16, 2025", text:"Would love a follow-up on the energy cost angle. That feels underreported."}
+    ]
+  },
+  {
+    id:2, title:"Why brutalist web design is having a moment",
+    subtitle:"Raw HTML aesthetics are back — and this time they mean something.",
+    category:"Design", author:"Sam Holtz", date:"May 9, 2025", readTime:"5 min",
+    excerpt:"Stripped of decoration, brutalist websites communicate a kind of honesty that polished design can't fake. But there's more going on than aesthetic contrarianism.",
+    body:`Stripped of decoration, brutalist websites communicate a kind of honesty that polished design can't fake. But there's more going on than aesthetic contrarianism.
+
+## What brutalism actually means
+
+Architectural brutalism — béton brut, raw concrete — was a statement against post-war ornamentalism. Web brutalism borrows the name and the attitude. It says: here is the structure. Here is the content. We will not hide the seams.
+
+The irony is that good brutalist web design requires as much craft as any polished alternative. The decision to show the scaffolding is a design decision. The choice of typeface — usually monospaced, often oversized — is not accidental.
+
+## Why now
+
+Three reasons come immediately to mind.
+
+First, the mainstream web has homogenised. Bootstrap, then Tailwind, then AI-generated UI: everything looks like everything else. Brutalism is legible precisely because it refuses the template.
+
+Second, authenticity has become a scarce resource. Users have learned to distrust the polished surface. A rough edge reads as real.
+
+Third, performance. Brutalist sites are fast. No carousel, no hero video, no cookie modal. Just content.
+
+> "Design is the silent ambassador of your brand. Sometimes the ambassador should raise its voice."
+
+## The craft inside the rawness
+
+Look closely at any well-executed brutalist site and you find obsessive attention to typography. The whitespace is deliberate. The hierarchy is strict. The rawness is performed, which is not a criticism — all design is performance.
+
+What brutalism refuses is the performance of luxury.`,
+    comments:[
+      {author:"Ji-woo Kim", date:"May 10, 2025", text:"The performance angle is underrated. My brutalist redesign cut load time by 70%."},
+    ]
+  },
+  {
+    id:3, title:"The coffee shop as office: economics of ambient work",
+    subtitle:"Why millions choose noise, strangers, and £5 lattes over a home desk.",
+    category:"Culture", author:"Adaeze Obi", date:"May 3, 2025", readTime:"6 min",
+    excerpt:"The economist's puzzle is straightforward: working from a coffee shop is more expensive, louder, and less private than working from home. Yet the practice keeps growing.",
+    body:`The economist's puzzle is straightforward: working from a coffee shop is more expensive, louder, and less private than working from home. Yet the practice keeps growing. What's actually being bought?
+
+## Not coffee
+
+Coffee is the transaction that licenses presence. The real purchase is harder to name: a structured environment that is neither home nor office, a social density that requires nothing, a light accountability that prevents the particular paralysis of total freedom.
+
+Working from home — truly alone, truly unobserved — is a condition humans have never evolved for. The office solved this by accident, not design. The coffee shop solves it more cheaply, more pleasantly, and without a commute.
+
+## The ambient sociality hypothesis
+
+Researchers have a name for what happens in coffee shops: ambient sociality. You are among people without being with them. You are witnessed without being evaluated. The low hum of conversation is not distraction — it is, for many cognitive styles, activation.
+
+Studies on moderate noise levels and creative performance show a consistent effect: the 70 decibels of a café environment improves performance on tasks requiring divergent thinking. Silence, counterintuitively, can be too demanding.
+
+> "We are social animals who also need solitude. The coffee shop has always understood this better than the office."
+
+## What it costs
+
+The average remote worker who coffee-shops three days a week spends roughly £2,400 a year on the privilege. Most report it as worth it. The calculation they are making — implicitly, privately — is that the productivity gain, the mood improvement, and the avoidance of home-based procrastination justify the expense.
+
+They are probably right.`,
+    comments:[
+      {author:"Marcus Willard", date:"May 4, 2025", text:"The ambient sociality concept is fascinating — I've always worked better in cafes but never had the vocabulary for it."},
+      {author:"Elena Marchetti", date:"May 5, 2025", text:"The 70 decibels stat is something I'll be quoting forever."},
+      {author:"Yuki Tanaka", date:"May 5, 2025", text:"Great read. Though £2,400/year hit different."}
+    ]
+  },
+  {
+    id:4, title:"Fermentation as philosophy",
+    subtitle:"What sourdough, kimchi, and kombucha have in common with slow thinking.",
+    category:"Culture", author:"Rosa Linde", date:"Apr 28, 2025", readTime:"4 min",
+    excerpt:"Every fermented food is a collaboration between the maker and time. You cannot hurry it. You cannot substitute anything for patience. That turns out to be instructive.",
+    body:`Every fermented food is a collaboration between the maker and time. You cannot hurry it. You cannot substitute anything for patience. That turns out to be instructive.
+
+## The microbiome does the work
+
+The fermentation revival of the last decade is often framed as wellness trend. It is that, but it is also something else: a rediscovery of process. You are not the author of a sourdough loaf. You are its facilitator. The wild yeast and bacteria do the actual work, in their own time, according to their own logic.
+
+This is philosophically disorienting if you are used to thinking of cooking as a craft of execution — follow the recipe, get the result. Fermentation refuses this. You set conditions. You wait. The outcome surprises you.
+
+## Time as ingredient
+
+There is no faster version. This is the thing. No shortcut, no substitute. If you add heat to hurry a ferment, you kill what you are trying to cultivate. The patience is not decorative patience. It is structural.
+
+In a culture optimised for instantaneity, the fermented jar on the counter becomes a small argument for a different relationship to time.
+
+> "The most important ingredient is the one you cannot buy: time."
+
+## What transfers
+
+Nothing, directly. But the habit of attending to a slow process — checking, adjusting, waiting, not intervening when intervention would ruin it — is a practice. The muscles you build watching a kimchi ferment for three weeks are the same muscles you use watching an idea develop.`,
+    comments:[]
+  },
+  {
+    id:5, title:"CSS container queries: the layout primitive we waited a decade for",
+    subtitle:"Finally, components can know their own context — and everything changes.",
+    category:"Technology", author:"Ji-woo Kim", date:"Apr 22, 2025", readTime:"8 min",
+    excerpt:"Media queries answer the question: how wide is the viewport? Container queries answer a more useful question: how much space do I actually have? The difference sounds small. It isn't.",
+    body:`Media queries answer the question: how wide is the viewport? Container queries answer a more useful question: how much space do I actually have? The difference sounds small. It isn't.
+
+## The component isolation problem
+
+When media queries arrived, they solved a real problem: responsive design was impossible without them. But they solved it at the wrong level. A media query is global. A component has no way to ask about its own context — only about the page.
+
+This created a fundamental tension in component-based design systems. Your card component needs to know if it is in a sidebar (narrow) or a main grid (wide). With media queries, it can only know if the *page* is narrow or wide. These are different questions with different answers.
+
+## What container queries give you
+
+The syntax is clean:
+
+\`\`\`css
+.card-wrapper { container-type: inline-size; }
+
+@container (min-width: 400px) {
+  .card { flex-direction: row; }
+}
+\`\`\`
+
+The card now asks its container, not the viewport. It doesn't care if it's in a sidebar or a full-width section. It knows its own space.
+
+## Why it took so long
+
+Container queries were proposed, discussed, prototyped, and abandoned multiple times over roughly fifteen years. The technical problem — avoiding circular dependencies where a child's size affects its parent's size affects the child — required new thinking in the layout algorithm.
+
+The solution, containment, required browsers to agree on a new primitive. Browser consensus is slow. But it happened.
+
+## What changes in practice
+
+Componentised design systems become genuinely portable for the first time. A component built with container queries works correctly in any context without modification. The long-promised dream of truly reusable UI components becomes achievable.`,
+    comments:[
+      {author:"Sam Holtz", date:"Apr 23, 2025", text:"The circular dependency explanation is the clearest I've seen. Bookmarked."}
+    ]
+  },
+  {
+    id:6, title:"The return of the opinion piece",
+    subtitle:"In an era of algorithmic content, a well-argued view is a radical act.",
+    category:"Opinion", author:"Tamir Osei", date:"Apr 15, 2025", readTime:"4 min",
+    excerpt:"The opinion piece is not dead. It is, if anything, more necessary than it was when newspapers printed three of them per day. The landscape around it has just gotten much noisier.",
+    body:`The opinion piece is not dead. It is, if anything, more necessary than it was when newspapers printed three of them per day. The landscape around it has just gotten much noisier.
+
+## What an opinion piece actually is
+
+A good opinion piece makes an argument. It says: here is what I think is true, here is why I think it, here is what follows if I am right. That sounds simple. It is increasingly rare.
+
+What passes for opinion online is usually assertion dressed as argument. The logic chain is missing, or circular, or imported from tribal affiliation. The reader is not invited to evaluate — they are invited to agree.
+
+Real opinion writing respects the reader enough to show the workings.
+
+## Why it matters now
+
+When content is generated at scale — whether by humans chasing metrics or AI chasing tokens — the distinguishing feature of good writing becomes its ability to be *wrong in interesting ways*. An opinion that could be falsified, that takes a risk, that might change on contact with new evidence: this is rare and therefore valuable.
+
+The algorithms reward engagement. Engagement is reliably produced by outrage, novelty, and confirmation. None of these require argument. The opinion writer is, in this environment, working against the infrastructure.
+
+> "A good argument is the most underrated form of generosity."
+
+## What I hope for
+
+More writers willing to make a case and lose it gracefully. More publications that print a correction without drama. More readers who distinguish between disagreement and error.
+
+The opinion piece is a bet. You think you are right. You might not be. Publishing is the act of submitting to finding out.`,
+    comments:[
+      {author:"Rosa Linde", date:"Apr 16, 2025", text:"'Wrong in interesting ways' — this is such a useful frame. Sharing immediately."},
+      {author:"Priya Nair", date:"Apr 17, 2025", text:"The argument vs assertion distinction should be mandatory reading for anyone who publishes online."}
+    ]
+  }
+];
+
+let state = {
+  posts: [...SEED_POSTS],
+  view: 'home',
+  activePost: null,
+  filter: null,
+  search: ''
+};
+
+// ── ROUTING ──────────────────────────────────────────────────────
+function navigate(view, postId){
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + view).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  if(view === 'home') { document.getElementById('nav-home').classList.add('active'); state.filter = null; state.search = ''; document.getElementById('search-input').value = ''; }
+  if(view === 'about') document.getElementById('nav-about').classList.add('active');
+  state.view = view;
+  if(view === 'post' && postId !== undefined){
+    state.activePost = postId;
+    renderPost(postId);
+  }
+  if(view === 'home') renderPosts();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function filterCat(cat){
+  state.filter = cat;
+  state.search = '';
+  document.getElementById('search-input').value = '';
+  navigate('home');
+  document.getElementById('posts-heading').textContent = cat;
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  const map = {Technology:'nav-tech', Design:'nav-design', Culture:'nav-culture'};
+  if(map[cat]) document.getElementById(map[cat]).classList.add('active');
+}
+
+function doSearch(){
+  const q = document.getElementById('search-input').value.trim().toLowerCase();
+  state.search = q;
+  state.filter = null;
+  document.getElementById('posts-heading').textContent = q ? `Results for "${q}"` : 'Latest Articles';
+  renderPosts();
+}
+
+// ── RENDER HOME ───────────────────────────────────────────────────
+function renderPosts(){
+  let posts = [...state.posts].reverse();
+  if(state.filter) posts = posts.filter(p => p.category === state.filter);
+  if(state.search) posts = posts.filter(p =>
+    p.title.toLowerCase().includes(state.search) ||
+    p.excerpt.toLowerCase().includes(state.search) ||
+    p.category.toLowerCase().includes(state.search) ||
+    p.author.toLowerCase().includes(state.search)
+  );
+
+  const list = document.getElementById('posts-list');
+  if(!posts.length){
+    list.innerHTML = `<div class="empty-state"><div class="big-icon">✎</div><h3>No articles found</h3><p>Try a different search or category.</p></div>`;
+    return;
+  }
+  list.innerHTML = posts.map((p,i) => {
+    const idx = SEED_POSTS.findIndex(s=>s.id===p.id);
+    const col = avatarColor(idx < 0 ? i : idx);
+    const symbol = ['✦','◈','◉','◆','◇','✿','❋'][i % 7];
+    return `<div class="post-card" onclick="navigate('post',${p.id})">
+      <div>
+        <div class="post-meta">
+          <span class="tag" onclick="event.stopPropagation();filterCat('${p.category}')">${p.category}</span>
+          <span class="post-date">${p.date}</span>
+        </div>
+        <div class="post-title">${p.title}</div>
+        <div class="post-excerpt">${p.excerpt}</div>
+        <div class="post-author-row">
+          <div class="avatar" style="background:${col}">${initials(p.author)}</div>
+          <span class="post-author-name">${p.author}</span>
+          <span class="read-time">${p.readTime} read</span>
+        </div>
+      </div>
+      <div class="post-thumb" style="background:${col}22;">${symbol}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderSidebar(){
+  // Categories
+  const cats = {};
+  state.posts.forEach(p => { cats[p.category] = (cats[p.category]||0)+1; });
+  document.getElementById('sidebar-cats').innerHTML = Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([cat,n]) =>
+    `<div class="cat-item" onclick="filterCat('${cat}')"><span>${cat}</span><span class="cat-count">${n}</span></div>`
+  ).join('');
+
+  // Recent
+  const recent = [...state.posts].reverse().slice(0,4);
+  document.getElementById('sidebar-recent').innerHTML = recent.map((p,i) =>
+    `<div class="recent-item" onclick="navigate('post',${p.id})">
+      <div class="recent-num">0${i+1}</div>
+      <div>
+        <div class="recent-title">${p.title}</div>
+        <div class="recent-date">${p.date}</div>
+      </div>
+    </div>`
+  ).join('');
+
+  // Strip
+  document.getElementById('featured-strip').innerHTML = state.posts.map(p =>
+    `<span onclick="navigate('post',${p.id})">${p.category.toUpperCase()} · ${p.title}</span>`
+  ).join('');
+}
+
+// ── RENDER POST DETAIL ─────────────────────────────────────────────
+function renderPost(id){
+  const p = state.posts.find(x=>x.id===id);
+  if(!p) return;
+  const col = avatarColor(SEED_POSTS.findIndex(s=>s.id===p.id));
+  const bodyHtml = p.body.split(/\n\n+/).map(para => {
+    if(para.startsWith('## ')) return `<h2>${para.slice(3)}</h2>`;
+    if(para.startsWith('### ')) return `<h3>${para.slice(4)}</h3>`;
+    if(para.startsWith('> ')) return `<blockquote>${para.slice(2)}</blockquote>`;
+    if(para.startsWith('```')) {
+      const code = para.replace(/```[a-z]*/,'').replace(/```/,'').trim();
+      return `<pre style="background:var(--tag-bg);padding:1rem;border-radius:4px;overflow-x:auto;font-size:0.85rem;margin:1.5rem 0;line-height:1.6"><code>${code.replace(/</g,'&lt;')}</code></pre>`;
+    }
+    return `<p>${para.replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')}</p>`;
+  }).join('');
+
+  const commentsHtml = p.comments.length ? p.comments.map((c,i) =>
+    `<div class="comment-item">
+      <div class="avatar" style="background:${avatarColor(i+2)};width:34px;height:34px;font-size:0.7rem;">${initials(c.author)}</div>
+      <div class="comment-body">
+        <div style="display:flex;align-items:center;gap:0.6rem;">
+          <span class="comment-author-name">${c.author}</span>
+          <span class="comment-date">${c.date}</span>
+        </div>
+        <div class="comment-text">${c.text}</div>
+      </div>
+    </div>`
+  ).join('') : '<p style="color:var(--muted);font-size:0.9rem;">No comments yet. Be the first!</p>';
+
+  document.getElementById('post-detail-content').innerHTML = `
+    <div class="post-header">
+      <span class="tag" onclick="filterCat('${p.category}')">${p.category}</span>
+      <h1>${p.title}</h1>
+      <p class="subtitle">${p.subtitle}</p>
+      <div class="post-byline">
+        <div class="avatar" style="background:${col};width:42px;height:42px;">${initials(p.author)}</div>
+        <div class="byline-info">
+          <div class="byline-name">${p.author}</div>
+          <div class="byline-meta">${p.date} · ${p.readTime} read · ${p.comments.length} comment${p.comments.length!==1?'s':''}</div>
+        </div>
+      </div>
+    </div>
+    <div class="post-body">${bodyHtml}</div>
+    <div class="tags-row">
+      <span class="tag" onclick="filterCat('${p.category}')">${p.category}</span>
+      <span class="tag" style="cursor:default">Long-form</span>
+      <span class="tag" style="cursor:default">Essay</span>
+    </div>
+    <div class="comments-section">
+      <h3>Comments (${p.comments.length})</h3>
+      <div class="comment-form">
+        <h4>Leave a comment</h4>
+        <div class="form-row">
+          <input type="text" class="form-input" id="c-name" placeholder="Your name" />
+          <input type="text" class="form-input" id="c-email" placeholder="Email (not published)" />
+        </div>
+        <textarea class="form-input" id="c-text" placeholder="Share your thoughts…" style="min-height:80px;resize:vertical;"></textarea>
+        <button class="btn-post" onclick="submitComment(${p.id})">Post Comment</button>
+      </div>
+      <div class="comment-list" id="comment-list-${p.id}">${commentsHtml}</div>
+    </div>
+  `;
+}
+
+// ── COMMENT SUBMIT ─────────────────────────────────────────────────
+function submitComment(postId){
+  const name = document.getElementById('c-name').value.trim();
+  const text = document.getElementById('c-text').value.trim();
+  if(!name || !text) { alert('Please fill in your name and comment.'); return; }
+  const p = state.posts.find(x=>x.id===postId);
+  const today = new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+  p.comments.push({author:name, date:today, text});
+  const list = document.getElementById('comment-list-'+postId);
+  const i = p.comments.length - 1;
+  const div = document.createElement('div');
+  div.className = 'comment-item';
+  div.innerHTML = `<div class="avatar" style="background:${avatarColor(i+2)};width:34px;height:34px;font-size:0.7rem;">${initials(name)}</div>
+    <div class="comment-body">
+      <div style="display:flex;align-items:center;gap:0.6rem;"><span class="comment-author-name">${name}</span><span class="comment-date">${today}</span></div>
+      <div class="comment-text">${text}</div>
+    </div>`;
+  if(list.querySelector('p')) list.innerHTML = '';
+  list.appendChild(div);
+  document.getElementById('c-name').value = '';
+  document.getElementById('c-text').value = '';
+  document.getElementById('c-email').value = '';
+  div.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+// ── PUBLISH POST ───────────────────────────────────────────────────
+function publishPost(){
+  const title = document.getElementById('w-title').value.trim();
+  const sub = document.getElementById('w-sub').value.trim();
+  const author = document.getElementById('w-author').value.trim();
+  const cat = document.getElementById('w-cat').value;
+  const body = document.getElementById('w-body').value.trim();
+  if(!title || !body || !author){ alert('Please fill in Title, Author, and Content.'); return; }
+  const today = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  const words = body.split(/\s+/).length;
+  const mins = Math.max(1, Math.round(words/200));
+  const newPost = {
+    id: Date.now(),
+    title, subtitle: sub || title,
+    category: cat, author, date: today,
+    readTime: `${mins} min`,
+    excerpt: body.slice(0,180).replace(/\n/g,' ') + '…',
+    body, comments:[]
+  };
+  state.posts.push(newPost);
+  ['w-title','w-sub','w-author','w-body'].forEach(id => document.getElementById(id).value='');
+  const toast = document.getElementById('success-toast');
+  toast.classList.add('show');
+  renderSidebar();
+  setTimeout(()=>{ toast.classList.remove('show'); navigate('post', newPost.id); }, 1800);
+}
+
+function saveDraft(){
+  const toast = document.getElementById('success-toast');
+  toast.textContent = '✓ Draft saved locally.';
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'), 2000);
+}
+
+// ── ABOUT ──────────────────────────────────────────────────────────
+function renderAbout(){
+  const team = [
+    {name:'Elena Marchetti',role:'Editor in Chief',col:'#c0392b'},
+    {name:'Sam Holtz',role:'Design Editor',col:'#2980b9'},
+    {name:'Adaeze Obi',role:'Culture Editor',col:'#27ae60'},
+    {name:'Ji-woo Kim',role:'Tech Editor',col:'#8e44ad'},
+    {name:'Tamir Osei',role:'Opinion Editor',col:'#e67e22'}
+  ];
+  document.getElementById('about-team').innerHTML = team.map(t =>
+    `<div class="team-card">
+      <div class="team-avatar" style="background:${t.col}">${initials(t.name)}</div>
+      <div class="team-name">${t.name}</div>
+      <div class="team-role">${t.role}</div>
+    </div>`
+  ).join('');
+}
+
+// ── INIT ───────────────────────────────────────────────────────────
+renderPosts();
+renderSidebar();
+renderAbout();
+</script>
+</body>
+</html>
