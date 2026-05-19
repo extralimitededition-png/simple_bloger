@@ -1,36 +1,16 @@
 <main>
   <section class="hero hero-auth">
     <div class="hero-copy">
-      <p class="eyebrow">Welcome to</p>
-      <h1>Grace Fellowship Church</h1>
+      <p class="eyebrow">Welcome back</p>
+      <h1>Sign in to Grace Fellowship Church</h1>
       <p class="hero-text">
-        Access your church account to join services, events, and community updates.
-        Sign in or create an account to get started.
+        Enter your credentials to access events, member resources, and announcements.
       </p>
     </div>
   </section>
 
   <section class="auth-panel">
     <div class="auth-card">
-      <div class="tab-switch">
-        <button
-          type="button"
-          class="tab-button"
-          [class.active]="selectedTab === 'login'"
-          (click)="selectTab('login')"
-        >
-          Login
-        </button>
-        <button
-          type="button"
-          class="tab-button"
-          [class.active]="selectedTab === 'signup'"
-          (click)="selectTab('signup')"
-        >
-          Sign Up
-        </button>
-      </div>
-
       <form class="auth-form" (submit)="onSubmit($event)">
         <label>
           Email
@@ -42,21 +22,12 @@
           <input type="password" placeholder="Enter your password" required />
         </label>
 
-        <label *ngIf="selectedTab === 'signup'">
-          Confirm Password
-          <input type="password" placeholder="Confirm your password" required />
-        </label>
-
-        <button type="submit" class="btn auth-submit">
-          {{ selectedTab === 'login' ? 'Login' : 'Create Account' }}
-        </button>
+        <button type="submit" class="btn auth-submit">Login</button>
       </form>
 
       <p class="auth-hint">
-        {{ selectedTab === 'login' ? 'New to Grace Fellowship?' : 'Already have an account?' }}
-        <button type="button" class="switch-link" (click)="selectTab(selectedTab === 'login' ? 'signup' : 'login')">
-          {{ selectedTab === 'login' ? 'Sign up now' : 'Login here' }}
-        </button>
+        New to Grace Fellowship?
+        <a routerLink="/signup" class="switch-link">Sign up now</a>
       </p>
     </div>
   </section>

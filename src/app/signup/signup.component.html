@@ -1,0 +1,46 @@
+<main>
+  <section class="hero hero-auth">
+    <div class="hero-copy">
+      <p class="eyebrow">Join Grace Fellowship</p>
+      <h1>Create your account</h1>
+      <p class="hero-text">
+        Register to receive updates, join services, and access member resources.
+      </p>
+    </div>
+  </section>
+
+  <section class="auth-panel">
+    <div class="auth-card">
+      <form class="auth-form" (submit)="onSubmit($event)">
+        <label>
+          Full Name
+          <input type="text" placeholder="Your full name" required />
+        </label>
+
+        <label>
+          Email
+          <input type="email" placeholder="you@example.com" required />
+        </label>
+
+        <label>
+          Password
+          <input type="password" placeholder="Create a password" required />
+        </label>
+
+        <label>
+          Confirm Password
+          <input type="password" placeholder="Confirm your password" required />
+        </label>
+
+        <button type="submit" class="btn auth-submit">
+          Create Account
+        </button>
+      </form>
+
+      <p class="auth-hint">
+        Already have an account?
+        <a routerLink="/login" class="switch-link">Log in here</a>
+      </p>
+    </div>
+  </section>
+</main>
