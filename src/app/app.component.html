@@ -1,6 +1,40 @@
 <main>
-  <section>
-    <h1>{{ title }}</h1>
-    <p>Welcome to the Angular application scaffold for Simple Bloger.</p>
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Welcome to</p>
+      <h1>{{ title }}</h1>
+      <p class="hero-text">
+        A warm, welcoming church community centered on faith, hope, and service.
+        Join us for worship, connection, and spiritual growth.
+      </p>
+      <div class="cta-row">
+        <a href="#about" class="btn">Our Mission</a>
+        <a href="#services" class="btn btn-secondary">Visit Us</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section-panel">
+    <h2>Our Mission</h2>
+    <p>
+      Grace Fellowship Church exists to share Christ's love, support families,
+      and serve our neighborhood with compassion and truth.
+    </p>
+  </section>
+
+  <section id="services" class="section-panel">
+    <div class="panel-grid">
+      <div>
+        <h3>Service Times</h3>
+        <p>Sunday Worship · 10:00 AM</p>
+        <p>Wednesday Bible Study · 7:00 PM</p>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <p>123 Church Street</p>
+        <p>Hometown, USA</p>
+        <p>(555) 123-4567</p>
+      </div>
+    </div>
   </section>
 </main>
