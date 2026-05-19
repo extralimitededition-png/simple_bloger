@@ -2,3 +2,24 @@
 :host {
   display: block;
 }
+
+.app-nav {
+  display: flex;
+  justify-content: center;
+  background: rgba(27, 94, 32, 0.95);
+  padding: 0.75rem 1rem;
+}
+
+.app-nav a {
+  color: #f1f8f2;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  transition: background-color 0.2s ease;
+}
+
+.app-nav a:hover,
+.app-nav a.active {
+  background: rgba(255, 255, 255, 0.15);
+}
