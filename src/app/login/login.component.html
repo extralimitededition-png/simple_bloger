@@ -14,20 +14,24 @@
       <form class="auth-form" (submit)="onSubmit($event)">
         <label>
           Email
-          <input type="email" placeholder="you@example.com" required />
+          <input type="email" [(ngModel)]="email" name="email" placeholder="you@example.com" required />
         </label>
 
         <label>
           Password
-          <input type="password" placeholder="Enter your password" required />
+          <input type="password" [(ngModel)]="password" name="password" placeholder="Enter your password" required />
         </label>
 
-        <button type="submit" class="btn auth-submit">Login</button>
+        <button type="submit" class="btn auth-submit" [disabled]="loading">
+          {{ loading ? 'Signing in...' : 'Login' }}
+        </button>
       </form>
 
+      <div class="auth-message" *ngIf="message">{{ message }}</div>
+
       <p class="auth-hint">
-        New to Grace Fellowship?
-        <a routerLink="/signup" class="switch-link">Sign up now</a>
+        Don't have an account?
+        <a routerLink="/signup" class="switch-link">Create account</a>
       </p>
     </div>
   </section>
