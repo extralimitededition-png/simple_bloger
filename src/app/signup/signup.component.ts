@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService, AuthResponse } from '../services/auth.service';
 
 @Component({
@@ -14,7 +15,7 @@ export class SignupComponent {
   loading = false;
   message = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit(event: Event): void {
     event.preventDefault();
@@ -25,6 +26,14 @@ export class SignupComponent {
       .subscribe((response: AuthResponse) => {
         this.loading = false;
         this.message = response.message;
+
+        if (response.success) {
+          this.name = '';
+          this.email = '';
+          this.password = '';
+          this.confirmPassword = '';
+          setTimeout(() => this.router.navigate(['/login']), 1000);
+        }
       });
   }
 }
